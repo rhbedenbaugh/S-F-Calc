@@ -10,7 +10,7 @@
   </head>
   <body>
     <div id="root">
-      <h2>Endmill speed & feed.</h2>
+      <h2>Endmill speed & feed</h2>
       <img
         width="100px"
         height="100px"
@@ -53,11 +53,34 @@
         <label for="workpieceMaterial">Workpiece Material -</label>
       </h3>
       <select name="workpieceMaterial" id="workpieceMaterial">
-        <option value="aluminum">Aluminum</option>
-        <option value="brass">Brass</option>
-        <option value="carbonSteel">Carbon Steel</option>
-        <option value="bronzeOrCastIron">Bronze / Cast Iron</option>
-        <option value="stainlessSteel">Stainless Steel</option></select
+        <option value="aluminumAlloys">Aluminum & Alloys</option>
+        <option value="brassSoftBronze">Brass & SoftBronze</option>
+        <option value="bronzeHighTensile">Bronze (high tensile)</option>
+        <option value="cooperAlloys">Cooper & Alloys</option>
+        <option value="ironCastSoft">Iron-Cast (soft)</option>
+        <option value="ironCastHard">Iron-Cast (hard)</option>
+        <option value="ironDuctile">Iron-Ductile</option>
+        <option value="ironMalleable">Iron Malleable</option>
+        <option value="magnesiumAlloys">Magnesium & Alloys</option>
+        <option value="molybdenum">Molybdenum</option>
+        <option value="monelHighNickelSteel">Monel & High Nickel Steel</option>
+        <option value="nickelBaseHighTempAlloys">
+          Nickel Base Hi-Temp Alloys
+        </option>
+        <option value="plastics">Plastics</option>
+        <option value="plasticsGlassFilled">Plastics (glass filled)</option>
+        <option value="refractoryAlloys">Refractory Alloys</option>
+        <option value="steelLowCarbon">Steel (low carbon)</option>
+        <option value="steelMediumCarbon">Steel (medium carbon)</option>
+        <option value="steelUpToRc35">Steel (up to Rc35)</option>
+        <option value="steelRc35ToRc50">Steel (Rc-35 - Rc50)</option>
+        <option value="steelRc50-Rc60">Steel (Rc50 - Rc60)</option>
+        <option value="steelMold">Steel (mold)</option>
+        <option value="steelTool">Steel (tool)</option>
+        <option value="stainlessSteelSoft">Stainless Steel (soft)</option>
+        <option value="stainlessSteelHard">Stainless Steel (hard)</option>
+        <option value="titaniumSoft">Titanium (soft)</option>
+        <option value="titaniumHard">Titanium (hard)</option></select
       ><br />
       <br />
 
@@ -91,7 +114,11 @@
             return;
           }
 
-          let multiplier = 1;
+          let multiplier;
+          if (units === 'inches') multiplier = 1;
+          if (units === 'millimeters') multiplier = 25.4;
+          
+          let toolMaterialReducer;
           if (units === 'inches') multiplier = 1;
           if (units === 'millimeters') multiplier = 25.4;
 
@@ -99,13 +126,33 @@
           if (idealSFM) {
             SFM = idealSFM;
           } else {
-            if (workpieceMaterial == 'aluminum') SFM = 1000;
-            if (workpieceMaterial == 'brass') SFM = 800;
-            if (workpieceMaterial == 'carbonSteel') SFM = 400;
-            if (workpieceMaterial == 'bronzeOrCastIron') SFM = 300;
-            if (workpieceMaterial == 'stainlessSteel') SFM = 100;
+            if (workpieceMaterial == 'aluminumAlloys') SFM = 600;
+            if (workpieceMaterial == 'brassSoftBronze') SFM = 400;
+            if (workpieceMaterial == 'bronzeHighTensile') SFM = 250;
+            if (workpieceMaterial == 'cooperAlloys') SFM = 350;
+            if (workpieceMaterial == 'ironCastSoft') SFM = 200;
+            if (workpieceMaterial == 'ironCastHard') SFM = 100;
+            if (workpieceMaterial == 'ironDuctile') SFM = 80;
+            if (workpieceMaterial == 'ironMalleable') SFM = 250;
+            if (workpieceMaterial == 'magnesiumAlloys') SFM = 800;
+            if (workpieceMaterial == 'molybdenum') SFM = 800;
+            if (workpieceMaterial == 'monelHighNickelSteel') SFM = 150;
+            if (workpieceMaterial == 'nickelBaseHighTempAlloys') SFM = 20;
+            if (workpieceMaterial == 'plastics') SFM = 600;
+            if (workpieceMaterial == 'plasticsGlassFilled') SFM = 300;
+            if (workpieceMaterial == 'refractoryAlloys') SFM = 80;
+            if (workpieceMaterial == 'steelLowCarbon') SFM = 250;
+            if (workpieceMaterial == 'steelMediumCarbon') SFM = 100;
+            if (workpieceMaterial == 'steelUpToRc35') SFM = 150;
+            if (workpieceMaterial == 'steelRc35ToRc50') SFM = 80;
+            if (workpieceMaterial == 'steelRc50-Rc60') SFM = 25;
+            if (workpieceMaterial == 'steelMold') SFM = 200;
+            if (workpieceMaterial == 'steelTool') SFM = 100;
+            if (workpieceMaterial == 'stainlessSteelSoft') SFM = 250;
+            if (workpieceMaterial == 'stainlessSteelHard') SFM = 50;
+            if (workpieceMaterial == 'titaniumSoft') SFM = 120;
+            if (workpieceMaterial == 'titaniumHard') SFM = 30;
           }
-
           let FPT;
           if (idealChipLoad) {
             FPT = idealChipLoad * cuttingEdges;
