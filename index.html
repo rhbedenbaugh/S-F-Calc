@@ -18,14 +18,11 @@
         alt="endmill SVG"
       /><br />
       <h2 id="message"></h2>
-      
+
       <h3>
         <label for="units">Units -</label>
       </h3>
-      <select
-        name="units"
-        id="units"
-      >
+      <select name="units" id="units">
         <option value="inches">Inches</option>
         <option value="millimeters">mms</option></select
       ><br />
@@ -34,10 +31,7 @@
       <h3>
         <label for="toolMaterial">Tool Material -</label>
       </h3>
-      <select
-        name="toolMaterial"
-        id="toolMaterial"
-      >
+      <select name="toolMaterial" id="toolMaterial">
         <option value="highSpeedSteel">HSS</option>
         <option value="coatedHighSpeedSteel">Coated HSS</option>
         <option value="carbide">Carbide</option>
@@ -46,22 +40,19 @@
       <br />
 
       <h3>Tool Diameter -</h3>
-      <input id="toolDiameter" size="5"/>
+      <input id="toolDiameter" size="5" />
       <br />
       <br />
 
       <h3>Cutting Edges -</h3>
-      <input id="cuttingEdges" size="5"/>
+      <input id="cuttingEdges" size="5" />
       <br />
       <br />
 
       <h3>
         <label for="workpieceMaterial">Workpiece Material -</label>
       </h3>
-      <select
-        name="workpieceMaterial"
-        id="workpieceMaterial"
-      >
+      <select name="workpieceMaterial" id="workpieceMaterial">
         <option value="aluminum">Aluminum</option>
         <option value="brass">Brass</option>
         <option value="carbonSteel">Carbon Steel</option>
@@ -71,25 +62,21 @@
       <br />
 
       <h3>Preferred surface speed. (optional)</h3>
-      <input id="idealSFM" size="5"/><br />
+      <input id="idealSFM" size="5" /><br />
       <br />
 
       <h3>Preferred chip load. (optional)</h3>
-      <input id="idealChipLoad" size="5"/>
+      <input id="idealChipLoad" size="5" />
       <br />
       <br />
 
-      <button onclick="calculate()">
-        Get my numbers
-      </button>
+      <button onclick="calculate()">Get my numbers</button>
 
       <script>
         function calculate() {
           //document input conversion
-          let units =
-            document.querySelector('#units').value;
-          let toolMaterial =
-            document.querySelector('#toolMaterial').value;
+          let units = document.querySelector('#units').value;
+          let toolMaterial = document.querySelector('#toolMaterial').value;
           let toolDiameter = document.querySelector('#toolDiameter').value;
           let cuttingEdges = parseInt(
             document.querySelector('#cuttingEdges').value
@@ -103,6 +90,10 @@
             message.innerHTML = 'Enter tool diameter & cutting edges.';
             return;
           }
+
+          let multiplier = 1;
+          if (units === 'inches') multiplier = 1;
+          if (units === 'millimeters') multiplier = 25.4;
 
           let SFM;
           if (idealSFM) {
@@ -127,12 +118,18 @@
           }
 
           //calculate
-          let speed = parseInt((SFM * 12) / (toolDiameter * Math.PI));
-          let feed = parseInt(speed * FPT * cuttingEdges);
+          let speed = parseInt(
+            (SFM * 12 * multiplier) / (toolDiameter * Math.PI)
+          );
+          let feed = parseInt(speed * FPT * cuttingEdges * multiplier);
 
-          message.innerHTML =
-            'Recommended: ' + feed + '" at ' + speed + ' RPM.';
-          return;
+          if (multiplier === 1) {
+            message.innerHTML = feed + '"/min at ' + speed + ' RPM.';
+            return;
+          } else {
+            message.innerHTML = feed + 'mm/min at ' + speed + ' RPM.';
+            return;
+          }
         }
       </script>
     </div>
