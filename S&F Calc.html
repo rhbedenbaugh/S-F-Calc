@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speed & Feed Calc</title>
+  </head>
+  <body>
+    <div id="root">
+      <h1>Find your endmill speed & feed.</h1>
+      <img
+        width="120px"
+        height="120px"
+        src="endmill.svg"
+        alt="endmill SVG"
+      /><br />
+      <br />
+      <h2 style="display: inline">Enter the tool diameter.</h2>
+      <input id="toolDiameter" size="5" style="display: inline" /> <br />
+      <br />
+
+      <h2 style="display: inline">Enter the # of cutting edges.</h2>
+      <input id="cuttingEdges" style="display: inline" size="5" /> <br />
+      <br />
+
+      <h2 style="display: inline">
+        <label for="material">Choose a material:</label>
+      </h2>
+      <select
+        name="material"
+        id="material"
+        style="font-size: 20px; display: inline"
+      >
+        <option value="aluminum">Aluminum</option>
+        <option value="brass">Brass</option>
+        <option value="carbonSteel">Carbon Steel</option>
+        <option value="bronzeOrCastIron">Bronze or Cast Iron</option>
+        <option value="stainlessSteel">Stainless Steel</option></select
+      ><br />
+      <br />
+
+      <h2 style="display: inline">Enter your own surface speed. (optional)</h2>
+      <input id="idealSFM" size="5" style="display: inline" /><br />
+      <br />
+
+      <h2 style="display: inline">Enter your own chip load. (optional)</h2>
+      <input id="idealChipLoad" size="5" style="display: inline" /><br />
+      <br />
+
+      <button onclick="calculate()" style="font-size: 20px">
+        Get my numbers
+      </button>
+      <h1 id="message"></h1>
+
+      <style>
+        body {
+          background-color: #efa72c;
+          text-align: center;
+          color: black;
+        }
+      </style>
+
+      <script>
+        function calculate() {
+          //document input conversion
+          let toolDiameter = document.querySelector('#toolDiameter').value;
+          let cuttingEdges = parseInt(
+            document.querySelector('#cuttingEdges').value
+          );
+          let material = document.querySelector('#material').value;
+          let idealSFM = parseInt(document.querySelector('#idealSFM').value);
+          let idealChipLoad = document.querySelector('#idealChipLoad').value;
+
+          let SFM;
+          if (idealSFM) {
+            SFM = idealSFM;
+          } else {
+            if (material == 'aluminum') SFM = 1000;
+            if (material == 'brass') SFM = 800;
+            if (material == 'carbonSteel') SFM = 400;
+            if (material == 'bronzeOrCastIron') SFM = 300;
+            if (material == 'stainlessSteel') SFM = 100;
+          }
+
+          let FPT;
+          if (idealChipLoad) {
+            FPT = idealChipLoad * cuttingEdges;
+          } else {
+            if (toolDiameter < 0.125) FPT = 0.0005;
+            if (toolDiameter < 0.25) FPT = 0.001;
+            if (toolDiameter < 0.4) FPT = 0.002;
+            if (toolDiameter < 0.6) FPT = 0.003;
+            if (toolDiameter > 0.6) FPT = 0.005;
+          }
+
+          //calculate
+          let speed = parseInt((SFM * 12) / (toolDiameter * Math.PI));
+          let feed = parseInt(speed * FPT * cuttingEdges);
+
+          message.innerHTML =
+            'Your feed is ' + feed + '" at ' + speed + ' RPM.';
+          return;
+        }
+      </script>
+    </div>
+  </body>
+</html>
