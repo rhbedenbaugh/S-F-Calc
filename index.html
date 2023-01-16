@@ -119,8 +119,10 @@
           if (units === 'millimeters') multiplier = 25.4;
           
           let toolMaterialReducer;
-          if (units === 'inches') multiplier = 1;
-          if (units === 'millimeters') multiplier = 25.4;
+          if (toolMaterial === 'highSpeedSteel') toolMaterialReducer = .5;
+          if (toolMaterial === 'coatedHighSpeedSteel') toolMaterialReducer = .7;
+          if (toolMaterial === 'carbide') toolMaterialReducer = 1;
+          if (toolMaterial === 'coatedCarbide') toolMaterialReducer = 1.2;
 
           let SFM;
           if (idealSFM) {
@@ -166,9 +168,9 @@
 
           //calculate
           let speed = parseInt(
-            (SFM * 12 * multiplier) / (toolDiameter * Math.PI)
+            (SFM * 12 * multiplier * toolMaterialReducer) / (toolDiameter * Math.PI)
           );
-          let feed = parseInt(speed * FPT * cuttingEdges * multiplier);
+          let feed = parseInt(speed * FPT * cuttingEdges * multiplier * toolMaterialReducer);
 
           if (multiplier === 1) {
             message.innerHTML = feed + '"/min at ' + speed + ' RPM.';
