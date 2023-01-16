@@ -17,6 +17,17 @@
         alt="endmill SVG"
       /><br />
       <h2 id="message"></h2>
+
+      <h3>
+        <label for="toolMaterial">Tool Material -</label>
+      </h3>
+      <select name="toolMaterial" id="toolMaterial" style="font-size: 15px">
+        <option value="highSpeedSteel">HSS</option>
+        <option value="coatedHighSpeedSteel">Coated HSS</option>
+        <option value="carbide">Carbide</option>
+        <option value="coatedCarbide">Coated Carbide</option></select
+      ><br /><br />
+
       <h3 style="display: inline">Tool Diameter -</h3>
       <input id="toolDiameter" size="5" style="display: inline" /> <br />
       <br />
@@ -25,9 +36,13 @@
       <input id="cuttingEdges" style="display: inline" size="5" /> <br />
 
       <h3>
-        <label for="material">Workpiece Material -</label>
+        <label for="workpieceMaterial">Workpiece Material -</label>
       </h3>
-      <select name="material" id="material" style="font-size: 20px">
+      <select
+        name="workpieceMaterial"
+        id="workpieceMaterial"
+        style="font-size: 15px"
+      >
         <option value="aluminum">Aluminum</option>
         <option value="brass">Brass</option>
         <option value="carbonSteel">Carbon Steel</option>
@@ -43,7 +58,7 @@
       <input id="idealChipLoad" size="5" style="display: inline" /><br />
       <br />
 
-      <button onclick="calculate()" style="font-size: 20px">
+      <button onclick="calculate()" style="font-size: 15px">
         Get my numbers
       </button>
 
@@ -62,7 +77,8 @@
           let cuttingEdges = parseInt(
             document.querySelector('#cuttingEdges').value
           );
-          let material = document.querySelector('#material').value;
+          let workpieceMaterial =
+            document.querySelector('#workpieceMaterial').value;
           let idealSFM = parseInt(document.querySelector('#idealSFM').value);
           let idealChipLoad = document.querySelector('#idealChipLoad').value;
 
@@ -70,11 +86,11 @@
           if (idealSFM) {
             SFM = idealSFM;
           } else {
-            if (material == 'aluminum') SFM = 1000;
-            if (material == 'brass') SFM = 800;
-            if (material == 'carbonSteel') SFM = 400;
-            if (material == 'bronzeOrCastIron') SFM = 300;
-            if (material == 'stainlessSteel') SFM = 100;
+            if (workpieceMaterial == 'aluminum') SFM = 1000;
+            if (workpieceMaterial == 'brass') SFM = 800;
+            if (workpieceMaterial == 'carbonSteel') SFM = 400;
+            if (workpieceMaterial == 'bronzeOrCastIron') SFM = 300;
+            if (workpieceMaterial == 'stainlessSteel') SFM = 100;
           }
 
           let FPT;
