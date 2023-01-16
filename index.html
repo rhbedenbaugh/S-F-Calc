@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="favicon.ico" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +10,7 @@
   </head>
   <body>
     <div id="root">
-      <h2>Carbide endmill speed & feed.</h2>
+      <h2>Endmill speed & feed.</h2>
       <img
         width="100px"
         height="100px"
@@ -17,14 +18,25 @@
         alt="endmill SVG"
       /><br />
       <h2 id="message"></h2>
+      
+      <h3>
+        <label for="units">Units -</label>
+      </h3>
+      <select
+        name="units"
+        id="units"
+      >
+        <option value="inches">Inches</option>
+        <option value="millimeters">mms</option></select
+      ><br />
+      <br />
 
-      <h3 style="display: inline">
+      <h3>
         <label for="toolMaterial">Tool Material -</label>
       </h3>
       <select
         name="toolMaterial"
         id="toolMaterial"
-        style="font-size: 15px; display: inline"
       >
         <option value="highSpeedSteel">HSS</option>
         <option value="coatedHighSpeedSteel">Coated HSS</option>
@@ -33,56 +45,51 @@
       ><br />
       <br />
 
-      <h3 style="display: inline">Tool Diameter -</h3>
-      <input id="toolDiameter" size="5" style="display: inline" />
+      <h3>Tool Diameter -</h3>
+      <input id="toolDiameter" size="5"/>
       <br />
       <br />
 
-      <h3 style="display: inline">Cutting Edges -</h3>
-      <input id="cuttingEdges" style="display: inline" size="5" />
+      <h3>Cutting Edges -</h3>
+      <input id="cuttingEdges" size="5"/>
       <br />
       <br />
 
-      <h3 style="display: inline">
+      <h3>
         <label for="workpieceMaterial">Workpiece Material -</label>
       </h3>
       <select
         name="workpieceMaterial"
         id="workpieceMaterial"
-        style="font-size: 15px; display: inline"
       >
         <option value="aluminum">Aluminum</option>
         <option value="brass">Brass</option>
         <option value="carbonSteel">Carbon Steel</option>
-        <option value="bronzeOrCastIron">Bronze or Cast Iron</option>
+        <option value="bronzeOrCastIron">Bronze / Cast Iron</option>
         <option value="stainlessSteel">Stainless Steel</option></select
       ><br />
       <br />
 
-      <h3 style="display: inline">Preferred surface speed. (optional)</h3>
-      <input id="idealSFM" size="5" style="display: inline" /><br />
+      <h3>Preferred surface speed. (optional)</h3>
+      <input id="idealSFM" size="5"/><br />
       <br />
 
-      <h3 style="display: inline">Preferred chip load. (optional)</h3>
-      <input id="idealChipLoad" size="5" style="display: inline" />
+      <h3>Preferred chip load. (optional)</h3>
+      <input id="idealChipLoad" size="5"/>
       <br />
       <br />
 
-      <button onclick="calculate()" style="font-size: 15px">
+      <button onclick="calculate()">
         Get my numbers
       </button>
-
-      <style>
-        body {
-          background-color: #efa72c;
-          text-align: center;
-          color: black;
-        }
-      </style>
 
       <script>
         function calculate() {
           //document input conversion
+          let units =
+            document.querySelector('#units').value;
+          let toolMaterial =
+            document.querySelector('#toolMaterial').value;
           let toolDiameter = document.querySelector('#toolDiameter').value;
           let cuttingEdges = parseInt(
             document.querySelector('#cuttingEdges').value
@@ -93,9 +100,8 @@
           let idealChipLoad = document.querySelector('#idealChipLoad').value;
 
           if (!toolDiameter || !cuttingEdges) {
-            message.innerHTML =
-            'Enter tool diameter & cutting edges.';
-          return;
+            message.innerHTML = 'Enter tool diameter & cutting edges.';
+            return;
           }
 
           let SFM;

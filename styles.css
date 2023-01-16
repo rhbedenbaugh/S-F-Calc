@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  background-color: #efa72c;
+  text-align: center;
+  color: black;
+}
+
+h3 {
+  display: inline;
+}
+
+button {
+  font-size: 15px;
+}
+
+input {
+  display: inline;
+}
+
+select {
+  font-size: 15px;
+  display: inline
+}
