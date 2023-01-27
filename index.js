@@ -3,12 +3,11 @@ function calculate() {
   let units = document.querySelector('#units').value;
   let toolMaterial = document.querySelector('#toolMaterial').value;
   let toolDiameter = document.querySelector('#toolDiameter').value;
-  let cuttingEdges = parseInt(
-    document.querySelector('#cuttingEdges').value
+  let cuttingEdges = parseInt(document.querySelector('#cuttingEdges').value);
+  let workpieceMaterial = document.querySelector('#workpieceMaterial').value;
+  let idealSurfaceSpeed = parseInt(
+    document.querySelector('#idealSurfaceSpeed').value
   );
-  let workpieceMaterial =
-    document.querySelector('#workpieceMaterial').value;
-  let idealSurfaceSpeed = parseInt(document.querySelector('#idealSurfaceSpeed').value);
   let idealChipLoad = document.querySelector('#idealChipLoad').value;
 
   if (!toolDiameter || !cuttingEdges) {
@@ -17,12 +16,12 @@ function calculate() {
   }
 
   let multiplier;
-  if (units === 'inches') multiplier = 1.;
+  if (units === 'inches') multiplier = 1;
   if (units === 'millimeters') multiplier = 25.4;
-  
+
   let toolMaterialReducer;
-  if (toolMaterial === 'highSpeedSteel') toolMaterialReducer = .5;
-  if (toolMaterial === 'coatedHighSpeedSteel') toolMaterialReducer = .7;
+  if (toolMaterial === 'highSpeedSteel') toolMaterialReducer = 0.5;
+  if (toolMaterial === 'coatedHighSpeedSteel') toolMaterialReducer = 0.7;
   if (toolMaterial === 'carbide') toolMaterialReducer = 1;
   if (toolMaterial === 'coatedCarbide') toolMaterialReducer = 1.2;
 
@@ -58,34 +57,33 @@ function calculate() {
     if (workpieceMaterial == 'titaniumHard') surfaceSpeed = 30;
   }
 
-  surfaceSpeed = (surfaceSpeed * 12 * multiplier)
+  surfaceSpeed = surfaceSpeed * 12 * multiplier;
 
   let FPT;
   if (idealChipLoad) {
     FPT = idealChipLoad * cuttingEdges;
   } else {
-    if ((toolDiameter / multiplier) < 0.125) FPT = 0.0005;
-    if ((toolDiameter / multiplier) < 0.25) FPT = 0.001;
-    if ((toolDiameter / multiplier) < 0.4) FPT = 0.002;
-    if ((toolDiameter / multiplier) < 0.6) FPT = 0.003;
-    if ((toolDiameter / multiplier) > 0.6) FPT = 0.005;
+    if (toolDiameter / multiplier < 0.125) FPT = 0.0005;
+    if (toolDiameter / multiplier < 0.25) FPT = 0.001;
+    if (toolDiameter / multiplier < 0.4) FPT = 0.002;
+    if (toolDiameter / multiplier < 0.6) FPT = 0.003;
+    if (toolDiameter / multiplier > 0.6) FPT = 0.005;
   }
 
-  FPT = (FPT * multiplier)
+  FPT = FPT * multiplier;
 
   //calculations
-  let speed = parseInt(
-    (surfaceSpeed ) / (toolDiameter * Math.PI)
-  );
-  let feed = parseInt(speed * FPT * cuttingEdges * toolMaterialReducer);
+  let speed = Math.round(surfaceSpeed / (toolDiameter * Math.PI));
+  let feed = Math.round(speed * FPT * cuttingEdges * toolMaterialReducer);
 
   if (multiplier === 1) {
     message1.innerHTML = feed + '"/min at ' + speed + ' RPM.';
-    message2.innerHTML = FPT + '" chip load at ' + (surfaceSpeed/12) + ' SFM';
+    message2.innerHTML = FPT + '" chip load at ' + surfaceSpeed / 12 + ' SFM';
     return;
   } else {
     message1.innerHTML = feed + 'mm/min at ' + speed + ' RPM.';
-    message2.innerHTML = FPT + 'mm chip load at ' + parseInt(surfaceSpeed/1000) + ' SMM';
+    message2.innerHTML =
+      FPT + 'mm chip load at ' + Math.round(surfaceSpeed / 1000) + ' SMM';
     return;
   }
 }
