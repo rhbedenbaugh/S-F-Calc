@@ -70,7 +70,7 @@ function calculate() {
     if (toolDiameter / multiplier > 0.6) FPT = 0.005;
   }
 
-  FPT = FPT * multiplier;
+  FPT = Number.parseFloat(FPT * multiplier).toFixed(3);
 
   //calculations
   let speed = Math.round(surfaceSpeed / (toolDiameter * Math.PI));
@@ -78,12 +78,12 @@ function calculate() {
 
   if (multiplier === 1) {
     message1.innerHTML = feed + '"/min at ' + speed + ' RPM.';
-    message2.innerHTML = FPT + '" chip load at ' + surfaceSpeed / 12 + ' SFM';
+    message2.innerHTML = FPT + '"/rev at ' + surfaceSpeed / 12 + ' SFM';
     return;
   } else {
     message1.innerHTML = feed + 'mm/min at ' + speed + ' RPM.';
     message2.innerHTML =
-      FPT + 'mm chip load at ' + Math.round(surfaceSpeed / 1000) + ' SMM';
+      FPT + 'mm/rev at ' + Math.round(surfaceSpeed / 1000) + ' SMM';
     return;
   }
 }
