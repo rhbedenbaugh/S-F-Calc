@@ -10,21 +10,25 @@ function calculate() {
   );
   let idealChipLoad = document.querySelector('#idealChipLoad').value;
 
+  //edge case for missing input
   if (!toolDiameter || !cuttingEdges) {
     message1.innerHTML = 'Enter tool diameter & cutting edges.';
     return;
   }
 
+  //multiplier for unit conversion
   let multiplier;
   if (units === 'inches') multiplier = 1;
   if (units === 'millimeters') multiplier = 25.4;
 
+  //ratio for cutting tool material and coating
   let toolMaterialReducer;
   if (toolMaterial === 'highSpeedSteel') toolMaterialReducer = 0.5;
   if (toolMaterial === 'coatedHighSpeedSteel') toolMaterialReducer = 0.7;
   if (toolMaterial === 'carbide') toolMaterialReducer = 1;
   if (toolMaterial === 'coatedCarbide') toolMaterialReducer = 1.2;
 
+  //average recommended surface speed for material (in feet/minute)
   let surfaceSpeed;
   if (idealSurfaceSpeed) {
     surfaceSpeed = idealSurfaceSpeed;
@@ -57,8 +61,10 @@ function calculate() {
     if (workpieceMaterial == 'titaniumHard') surfaceSpeed = 30;
   }
 
+  //conversion on feet/minute to inches/minute
   surfaceSpeed = surfaceSpeed * 12 * multiplier;
 
+  //average feed per cutting edge based on tool diameter
   let FPT;
   if (idealChipLoad) {
     FPT = idealChipLoad * cuttingEdges;
@@ -70,12 +76,14 @@ function calculate() {
     if (toolDiameter / multiplier > 0.6) FPT = 0.005;
   }
 
-  FPT = Number.parseFloat(FPT * multiplier).toFixed(3);
+  //rounding FPT to 4 decimal places (for metric computations)
+  FPT = Number.parseFloat(FPT * multiplier).toFixed(4);
 
   //calculations
   let speed = Math.round(surfaceSpeed / (toolDiameter * Math.PI));
   let feed = Math.round(speed * FPT * cuttingEdges * toolMaterialReducer);
 
+  //messages
   if (multiplier === 1) {
     message1.innerHTML = feed + '"/min at ' + speed + ' RPM.';
     message2.innerHTML = FPT + '"/rev at ' + surfaceSpeed / 12 + ' SFM';
